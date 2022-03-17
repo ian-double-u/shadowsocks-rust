@@ -33,7 +33,7 @@ RUN rustup install nightly && rustup default nightly && \
     RUSTFLAGS="-C linker=$CC -C strip=symbols" CC=$CC cargo build --target "$RUST_TARGET" --release --features "local-tun local-redir armv8 neon" && \
     mv target/$RUST_TARGET/release/ss* target/release/
 
-FROM alpine:3.14 AS sslocal
+FROM alpine:3.15 AS sslocal
 
 COPY --from=build /root/shadowsocks-rust/target/release/sslocal /usr/bin
 
@@ -43,7 +43,7 @@ USER nobody
 
 ENTRYPOINT [ "sslocal", "--log-without-time", "-c", "/etc/shadowsocks-rust/config.json" ]
 
-FROM alpine:3.14 AS ssserver
+FROM alpine:3.15 AS ssserver
 
 COPY --from=build /root/shadowsocks-rust/target/release/ssserver /usr/bin
 
